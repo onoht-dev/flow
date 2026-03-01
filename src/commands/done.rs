@@ -9,10 +9,13 @@ pub fn run() -> Result<()> {
             println!("No current context to complete.");
         }
         Some(context) => {
+            // Archive to history before clearing
+            storage.append_to_history(&context)?;
+
             println!("✅ Task completed: \"{}\"", context.note);
             storage.clear_context()?;
             println!();
-            println!("Context cleared. Ready for a new task!");
+            println!("Context archived to history. Ready for a new task!");
             println!("Use 'flow note \"...\"' to start tracking a new context.");
         }
     }

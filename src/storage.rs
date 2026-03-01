@@ -1,7 +1,20 @@
 use crate::context::Context;
 use anyhow::Result;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
+
+/// A completed context entry in history
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HistoryEntry {
+    /// The context that was completed
+    pub context: Context,
+    /// When this context was marked as done
+    pub completed_at: DateTime<Utc>,
+    /// Duration in minutes (approximate)
+    pub duration_minutes: i64,
+}
 
 /// Handles persistence of context data
 pub struct Storage {
@@ -25,6 +38,11 @@ impl Storage {
     /// Get the path to the current context file
     fn context_file(&self) -> PathBuf {
         self.base_dir.join("context.json")
+    }
+
+    /// Get the path to the history file
+    fn history_file(&self) -> PathBuf {
+        self.base_dir.join("history.json")
     }
 
     /// Ensure the storage directory exists
@@ -63,6 +81,50 @@ impl Storage {
             fs::remove_file(path)?;
         }
         Ok(())
+    }
+
+    /// Append a context to history
+    pub fn append_to_history(&self, context: &Context) -> Result<()> {
+        self.ensure_dir()?;
+
+        let duration = Utc::now().signed_duration_since(context.timestamp);
+        let duration_minutes = duration.num_minutes().max(0);
+
+        let entry = HistoryEntry {
+            context: context.clone(),
+            completed_at: Utc::now(),
+            duration_minutes,
+        };
+
+        // Load existing history
+        let mut history = self.load_history()?;
+
+        // Add new entry at the beginning (most recent first)
+        history.insert(0, entry);
+
+        // Keep only last 100 entries
+        if history.len() > 100 {
+            history.truncate(100);
+        }
+
+        // Save history
+        let path = self.history_file();
+        let json = serde_json::to_string_pretty(&history)?;
+        fs::write(path, json)?;
+
+        Ok(())
+    }
+
+    /// Load history entries
+    pub fn load_history(&self) -> Result<Vec<HistoryEntry>> {
+        let path = self.history_file();
+        if !path.exists() {
+            return Ok(Vec::new());
+        }
+
+        let json = fs::read_to_string(path)?;
+        let history: Vec<HistoryEntry> = serde_json::from_str(&json)?;
+        Ok(history)
     }
 }
 
