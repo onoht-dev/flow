@@ -30,8 +30,8 @@ cargo install flow
 
 ## Roadmap
 
+- [x] Context history (v0.2.0)
 - [ ] Project-specific contexts
-- [ ] Context history
 - [ ] Team sharing
 - [ ] Git hooks integration
 
