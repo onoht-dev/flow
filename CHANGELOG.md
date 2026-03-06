@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1](https://github.com/onoht-dev/flow/compare/v0.3.0...v0.3.1) - 2026-03-06
+
+### Fixed
+
+- resolve temporary value lifetime issue in git.rs
+
+### Other
+
+- replace git2 with shell commands to reduce dependencies
+
 ## [0.3.0](https://github.com/onoht-dev/flow/compare/v0.2.3...v0.3.0) - 2026-03-06
 
 ### Added
