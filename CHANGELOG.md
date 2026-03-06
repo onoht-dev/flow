@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0](https://github.com/onoht-dev/flow/compare/v0.3.1...v0.4.0) - 2026-03-06
+
+### Added
+
+- add shell completion support for zsh, bash, fish, etc
+
 ## [0.3.1](https://github.com/onoht-dev/flow/compare/v0.3.0...v0.3.1) - 2026-03-06
 
 ### Fixed
