@@ -8,28 +8,22 @@ pub fn run(limit: usize, search: Option<String>, repo: Option<String>) -> Result
 
     // Apply filters
     if let Some(search_term) = &search {
-        history = history
-            .into_iter()
-            .filter(|e| {
-                e.context
-                    .note
-                    .to_lowercase()
-                    .contains(&search_term.to_lowercase())
-            })
-            .collect();
+        history.retain(|e| {
+            e.context
+                .note
+                .to_lowercase()
+                .contains(&search_term.to_lowercase())
+        });
     }
 
     if let Some(repo_name) = &repo {
-        history = history
-            .into_iter()
-            .filter(|e| {
-                e.context
-                    .repo
-                    .as_ref()
-                    .map(|r| r.to_lowercase().contains(&repo_name.to_lowercase()))
-                    .unwrap_or(false)
-            })
-            .collect();
+        history.retain(|e| {
+            e.context
+                .repo
+                .as_ref()
+                .map(|r| r.to_lowercase().contains(&repo_name.to_lowercase()))
+                .unwrap_or(false)
+        });
     }
 
     println!("📊 Context History");
@@ -119,10 +113,9 @@ fn format_duration(minutes: i64) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::context::Context;
     use crate::storage::HistoryEntry;
-    use chrono::{DateTime, Utc};
+    use chrono::Utc;
 
     fn create_test_entry(note: &str, repo: Option<&str>, branch: Option<&str>) -> HistoryEntry {
         let mut context = Context::new(note.to_string());
@@ -138,7 +131,7 @@ mod tests {
 
     #[test]
     fn test_filter_by_search_case_insensitive() {
-        let entries = vec![
+        let entries = [
             create_test_entry("Fix authentication bug", Some("my-repo"), Some("main")),
             create_test_entry("Add feature for AUTH flow", Some("other-repo"), Some("dev")),
             create_test_entry("Update documentation", Some("my-repo"), Some("docs")),
@@ -162,7 +155,7 @@ mod tests {
 
     #[test]
     fn test_filter_by_repo_case_insensitive() {
-        let entries = vec![
+        let entries = [
             create_test_entry("Task 1", Some("My-Repo"), Some("main")),
             create_test_entry("Task 2", Some("my-repo"), Some("dev")),
             create_test_entry("Task 3", Some("other-repo"), Some("main")),
@@ -186,8 +179,9 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::manual_retain)]
     fn test_filter_by_search_and_repo_combined() {
-        let entries = vec![
+        let entries = [
             create_test_entry("Fix auth bug", Some("my-repo"), Some("main")),
             create_test_entry("Fix auth bug", Some("other-repo"), Some("dev")),
             create_test_entry("Update docs", Some("my-repo"), Some("docs")),
@@ -218,7 +212,7 @@ mod tests {
 
     #[test]
     fn test_filter_no_match_returns_empty() {
-        let entries = vec![
+        let entries = [
             create_test_entry("Task 1", Some("repo1"), Some("main")),
             create_test_entry("Task 2", Some("repo2"), Some("dev")),
         ];
@@ -239,7 +233,7 @@ mod tests {
 
     #[test]
     fn test_filter_entry_without_repo() {
-        let entries = vec![
+        let entries = [
             create_test_entry("Task 1", None, None),
             create_test_entry("Task 2", Some("my-repo"), Some("main")),
         ];
