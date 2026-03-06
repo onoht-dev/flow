@@ -65,11 +65,8 @@ mod tests {
 
     #[test]
     fn test_context_serialization() {
-        let context = Context::new_with_git(
-            "test".to_string(),
-            "repo".to_string(),
-            "branch".to_string(),
-        );
+        let context =
+            Context::new_with_git("test".to_string(), "repo".to_string(), "branch".to_string());
 
         // Serialize
         let json = serde_json::to_string(&context).unwrap();

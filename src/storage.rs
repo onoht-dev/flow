@@ -30,8 +30,8 @@ impl Storage {
 
     /// Get the default storage location (~/.flow)
     pub fn default_location() -> Result<Self> {
-        let home = dirs::home_dir()
-            .ok_or_else(|| anyhow::anyhow!("Could not find home directory"))?;
+        let home =
+            dirs::home_dir().ok_or_else(|| anyhow::anyhow!("Could not find home directory"))?;
         Ok(Self::new(home.join(".flow")))
     }
 

@@ -48,7 +48,7 @@ repos:
       # Rust formatting
       - id: fmt
         name: Rust format
-        entry: cargo fmt --check
+        entry: /root/.cargo/bin/cargo fmt --check
         language: system
         types: [rust]
         pass_filenames: false
@@ -57,7 +57,7 @@ repos:
       # Clippy lints
       - id: clippy
         name: Clippy
-        entry: cargo clippy --all-targets --all-features -- -D warnings
+        entry: /root/.cargo/bin/cargo clippy --all-targets --all-features -- -D warnings
         language: system
         types: [rust]
         pass_filenames: false
@@ -66,7 +66,7 @@ repos:
       # Run tests
       - id: test
         name: Run tests
-        entry: cargo test
+        entry: /root/.cargo/bin/cargo test
         language: system
         types: [rust]
         pass_filenames: false

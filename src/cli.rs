@@ -30,6 +30,14 @@ pub enum Commands {
         /// Number of past contexts to show
         #[arg(short, long, default_value = "10")]
         limit: usize,
+
+        /// Filter by note text (case-insensitive)
+        #[arg(long)]
+        search: Option<String>,
+
+        /// Filter by repository name (case-insensitive)
+        #[arg(long)]
+        repo: Option<String>,
     },
 
     /// Mark the current task as complete and clear context
