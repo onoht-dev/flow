@@ -28,12 +28,10 @@ Git-aware. Fast (< 50ms). Offline. Simple JSON storage.
 cargo install flow
 ```
 
-## Roadmap
+## Documentation
 
-- [x] Context history (v0.2.0)
-- [ ] Project-specific contexts
-- [ ] Team sharing
-- [ ] Git hooks integration
+- [Contributing](docs/CONTRIBUTING.md) — How to contribute to Flow
+- [Roadmap](docs/ROADMAP.md) — Future plans and progress
 
 ---
 

@@ -1,0 +1,45 @@
+# git-cliff configuration
+# https://git-cliff.org/docs/configuration
+
+[changelog]
+# template for the changelog body
+body = """
+## [{{ version }}] - {{ date | date(format="%Y-%m-%d") }}
+
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | title }}
+{% for commit in commits %}
+- {{ commit.message | split(pat="\n") | first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/onoht-dev/flow/commit/{{ commit.id }}))
+{% endfor %}
+{% endfor %}
+"""
+
+[git]
+# parse conventional commits
+conventional_commits = true
+# filter out commits that don't match conventional format
+filter_unconventional = true
+# process each commit before rendering
+commit_preprocessors = [
+  # remove issue numbers from commit messages
+  { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
+]
+# group commits by their type
+commit_parsers = [
+  { message = "^feat", group = "Features" },
+  { message = "^fix", group = "Bug Fixes" },
+  { message = "^docs", group = "Documentation" },
+  { message = "^style", group = "Styling" },
+  { message = "^refactor", group = "Refactoring" },
+  { message = "^perf", group = "Performance" },
+  { message = "^test", group = "Testing" },
+  { message = "^build", group = "Build" },
+  { message = "^ci", group = "Continuous Integration" },
+  { message = "^chore", group = "Miscellaneous Tasks" },
+  { message = "^revert", group = "Reverts" },
+]
+# exclude commits that match any of these patterns
+exclude_commits = []
+
+# regex for parsing the git log
+sort_commits = "oldest"
