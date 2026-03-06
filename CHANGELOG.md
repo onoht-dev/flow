@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0](https://github.com/onoht-dev/flow/compare/v0.2.3...v0.3.0) - 2026-03-06
+
+### Added
+
+- *(history)* add search and repo filter options ([#9](https://github.com/onoht-dev/flow/pull/9))
+
+### Other
+
+- add CI workflow for automated testing ([#7](https://github.com/onoht-dev/flow/pull/7))
+
 ## [0.2.3](https://github.com/onoht-dev/flow/compare/v0.2.2...v0.2.3) - 2026-03-06
 
 ### Added
