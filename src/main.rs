@@ -9,7 +9,7 @@ fn main() -> Result<()> {
         Commands::Note { note } => flow::commands::run_note(note)?,
         Commands::Status => flow::commands::run_status()?,
         Commands::Resume => flow::commands::run_resume()?,
-        Commands::History { limit } => flow::commands::run_history(limit)?,
+        Commands::History { limit, search, repo } => flow::commands::run_history(limit, search, repo)?,
         Commands::Done => flow::commands::run_done()?,
     }
 
